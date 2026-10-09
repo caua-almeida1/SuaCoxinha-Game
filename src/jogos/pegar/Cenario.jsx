@@ -4,7 +4,7 @@ import { memo } from 'react'
    Tudo aqui é desenho em CSS/SVG dividido em camadas. Cada camada carrega um
    `--d` (profundidade): o laço do jogo escreve `--px` na raiz da cena e o CSS
    desloca cada camada por `--px * --d`, então o fundo anda devagar e a frente
-   anda rápido quando o Sr. Coxinha se move.
+   anda rápido quando o Coxinildo se move.
 
    O clima (`data-fase`) troca sozinho entre sol, nuvens, arco-íris e noite —
    as cores do céu são variáveis e a transição é feita pelo próprio CSS. */

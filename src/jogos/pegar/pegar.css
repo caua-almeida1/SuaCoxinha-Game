@@ -1,0 +1,29 @@
+/* Pega Pega — o cenário e o Coxinildo moram em comum/base.css (foi o primeiro
+   jogo); aqui só o que é novo: a dica de arrastar no celular. */
+
+.dica-toque {
+  position: absolute;
+  left: 50%;
+  bottom: 112px;
+  z-index: 41;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(58, 34, 8, 0.82);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: dica-some 4.2s ease forwards;
+}
+
+@keyframes dica-some {
+  0% { opacity: 0; }
+  10%, 75% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dica-toque { display: none; }
+}

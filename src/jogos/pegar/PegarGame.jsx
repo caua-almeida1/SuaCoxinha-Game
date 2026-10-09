@@ -1,12 +1,16 @@
-import { useCallback, useEffect } from 'react'
+import { useMemo } from 'react'
 
-import './coxinha.css'
+import './pegar.css'
 import Cenario from './Cenario.jsx'
-import SrCoxinha from './SrCoxinha.jsx'
-import { CATALOGO, BONS, RUINS, ItemCaindo } from './itens.jsx'
+import Coxinildo from './Coxinildo.jsx'
+import Topo from '../comum/Topo.jsx'
+import { CartaoOferta, VitrineAoVivo } from '../comum/Oferta.jsx'
+import { ofertaPelaPartida, produtoAleatorio } from '../comum/ofertas.js'
+import { useSom } from '../comum/som.js'
+import { CATALOGO, BONS, RUINS, ItemCaindo } from '../comum/itens.jsx'
 import { useJogo } from './useJogo.js'
 
-/* Sr. Coxinha — o joguinho da Sua Coxinha.
+/* Pega Pega do Coxinildo.
 
    O mascote passeia pelo Vale da Coxinha com um prato em cada mão. Do céu cai
    coxinha, churros, refri e copo mágico (ponto), misturados com brócolis,
@@ -55,7 +59,7 @@ function Legenda({ chaves, titulo, tom }) {
   )
 }
 
-export default function CoxinhaGame({ navegar }) {
+export default function PegarGame({ aoVoltar }) {
   const {
     palcoRef,
     cenaRef,
@@ -66,35 +70,31 @@ export default function CoxinhaGame({ navegar }) {
     efeitos,
     fase,
     recorde,
-    somLigado,
-    alternarSom,
+    contagem,
     iniciar,
     voltarAoMenu,
     pausar,
     retomar,
     definirTecla,
     pular,
+    aoTocarPalco,
+    aoArrastarPalco,
+    aoSoltarPalco,
   } = useJogo()
-
-  /* a loja reserva um pedaço do rodapé para a barra de pedido no celular;
-     enquanto o jogo está aberto a tela é toda dele */
-  useEffect(() => {
-    document.body.classList.add('jogo-aberto')
-    return () => document.body.classList.remove('jogo-aberto')
-  }, [])
+  const { somLigado, alternarSom } = useSom()
 
   const clima = CLIMAS[fase]
   const multiplicador = 1 + Math.min(4, Math.floor(placar.combo / 4))
 
-  const sair = useCallback(() => {
-    if (navegar) navegar('/')
-    else window.location.href = '/'
-  }, [navegar])
+  /* a oferta do fim de jogo é o produto de verdade do item que a pessoa mais pegou */
+  const ofertaFim = useMemo(() => (estado === 'fim' ? ofertaPelaPartida(contagem) : null), [estado, contagem])
+  const ofertaPausa = useMemo(() => (estado === 'pausado' ? produtoAleatorio() : null), [estado])
 
   /* Botões de celular: seguram a tecla enquanto o dedo estiver em cima. */
   const segurar = (nome) => ({
     onPointerDown: (evento) => {
       evento.preventDefault()
+      evento.stopPropagation()
       evento.currentTarget.setPointerCapture?.(evento.pointerId)
       definirTecla(nome, true)
     },
@@ -105,40 +105,25 @@ export default function CoxinhaGame({ navegar }) {
 
   return (
     <main className="jogo" data-estado={estado}>
-      {/* ===================== topo ===================== */}
-      <header className="jogo__topo">
-        <button type="button" className="botao-icone" onClick={sair}>
-          <span aria-hidden="true">←</span> Voltar ao site
-        </button>
-
-        <div className="jogo__titulo">
-          <strong>Sr. Coxinha</strong>
-          <span>Vale da Coxinha</span>
-        </div>
-
-        <div className="jogo__acoes">
-          <button
-            type="button"
-            className="botao-icone botao-icone--quadrado"
-            onClick={alternarSom}
-            aria-pressed={somLigado}
-            title={somLigado ? 'Desligar o som' : 'Ligar o som'}
-          >
-            <span aria-hidden="true">{somLigado ? '🔊' : '🔇'}</span>
-            <span className="sr-only">Som</span>
-          </button>
-
-          {estado === 'jogando' && (
-            <button type="button" className="botao-icone botao-icone--quadrado" onClick={pausar} title="Pausar">
-              <span aria-hidden="true">❚❚</span>
-              <span className="sr-only">Pausar</span>
-            </button>
-          )}
-        </div>
-      </header>
+      <Topo
+        titulo="Pega Pega"
+        lugar="Vale da Coxinha"
+        aoVoltar={aoVoltar}
+        somLigado={somLigado}
+        alternarSom={alternarSom}
+        pausar={estado === 'jogando' ? pausar : null}
+      />
 
       {/* ===================== palco ===================== */}
-      <div className="palco" ref={palcoRef} data-fase={fase}>
+      <div
+        className="palco"
+        ref={palcoRef}
+        data-fase={fase}
+        onPointerDown={estado === 'jogando' ? aoTocarPalco : undefined}
+        onPointerMove={estado === 'jogando' ? aoArrastarPalco : undefined}
+        onPointerUp={aoSoltarPalco}
+        onPointerCancel={aoSoltarPalco}
+      >
         <Cenario cenaRef={cenaRef} fase={fase} />
 
         <div className="palco__itens">
@@ -147,7 +132,7 @@ export default function CoxinhaGame({ navegar }) {
           ))}
         </div>
 
-        <SrCoxinha ref={heroiRef} altura={150} />
+        <Coxinildo ref={heroiRef} altura={150} />
 
         <div className="palco__efeitos">
           {efeitos.map((efeito) => (
@@ -193,27 +178,37 @@ export default function CoxinhaGame({ navegar }) {
           </div>
         )}
 
+        <VitrineAoVivo ativo={estado === 'jogando'} posicao="topo" />
+
         {/* ----- controles de toque ----- */}
         {estado === 'jogando' && (
-          <div className="controles">
-            <button type="button" className="controle" {...segurar('esq')} aria-label="Ir para a esquerda">
-              ◀
-            </button>
-            <button type="button" className="controle" {...segurar('dir')} aria-label="Ir para a direita">
-              ▶
-            </button>
-            <button
-              type="button"
-              className="controle controle--pulo"
-              onPointerDown={(evento) => {
-                evento.preventDefault()
-                pular()
-              }}
-              aria-label="Pular"
-            >
-              ⤒
-            </button>
-          </div>
+          <>
+            <div className="dica-toque" aria-hidden="true">
+              Arraste o Coxinildo · puxe pra cima para pular
+            </div>
+            <div className="controles">
+              <div className="controles__setas">
+                <button type="button" className="controle" {...segurar('esq')} aria-label="Ir para a esquerda">
+                  ◀
+                </button>
+                <button type="button" className="controle" {...segurar('dir')} aria-label="Ir para a direita">
+                  ▶
+                </button>
+              </div>
+              <button
+                type="button"
+                className="controle controle--pulo"
+                onPointerDown={(evento) => {
+                  evento.preventDefault()
+                  evento.stopPropagation()
+                  pular()
+                }}
+                aria-label="Pular"
+              >
+                ⤒
+              </button>
+            </div>
+          </>
         )}
 
         {/* ===================== telas ===================== */}
@@ -221,9 +216,9 @@ export default function CoxinhaGame({ navegar }) {
           <div className="tela">
             <div className="quadro quadro--largo">
               <span className="quadro__faixa">Sua Coxinha apresenta</span>
-              <h1 className="quadro__titulo">Sr. Coxinha</h1>
+              <h1 className="quadro__titulo">Pega Pega</h1>
               <p className="quadro__texto">
-                O Sr. Coxinha saiu para passear com um prato em cada mão. Do céu começou a cair comida —
+                O Coxinildo saiu para passear com um prato em cada mão. Do céu começou a cair comida —
                 e também umas coisas que coxinha nenhuma merece. Encha os pratos, desvie do resto.
               </p>
 
@@ -251,7 +246,9 @@ export default function CoxinhaGame({ navegar }) {
                 Começar <span aria-hidden="true">→</span>
               </button>
 
-              <small className="quadro__rodape">No celular, use os botões na parte de baixo da tela.</small>
+              <small className="quadro__rodape">
+                No celular, arraste o Coxinildo com o dedo e puxe pra cima para pular — ou use os botões.
+              </small>
             </div>
           </div>
         )}
@@ -260,7 +257,8 @@ export default function CoxinhaGame({ navegar }) {
           <div className="tela">
             <div className="quadro">
               <h2 className="quadro__titulo quadro__titulo--medio">Pausa</h2>
-              <p className="quadro__texto">O Sr. Coxinha aproveitou para respirar.</p>
+              <p className="quadro__texto">O Coxinildo aproveitou para respirar. E beliscar alguma coisa…</p>
+              <CartaoOferta produto={ofertaPausa} chamada="Pausa pro lanche?" />
               <button type="button" className="botao-principal" onClick={retomar}>
                 Continuar
               </button>
@@ -294,11 +292,13 @@ export default function CoxinhaGame({ navegar }) {
                 </div>
               </div>
 
+              <CartaoOferta produto={ofertaFim} chamada="Pegou fome também?" />
+
               <button type="button" className="botao-principal" onClick={iniciar}>
                 Jogar de novo
               </button>
-              <button type="button" className="botao-secundario" onClick={sair}>
-                Voltar ao site
+              <button type="button" className="botao-secundario" onClick={aoVoltar}>
+                Outros jogos
               </button>
             </div>
           </div>

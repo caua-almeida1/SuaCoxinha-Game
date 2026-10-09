@@ -1,8 +1,10 @@
 import { memo } from 'react'
 
-/* Tudo que cai do céu. Cada item é um desenho em SVG — nada de imagem extra
+/* Tudo que cai do céu (Pega Pega) ou voa pela cozinha (Coxinha Ninja).
+   Cada item é um desenho em SVG — nada de imagem extra
    para carregar, e o traço grosso combina com o resto do cenário.
-   `tipo: 'bom'` vai para o prato e vale ponto. `tipo: 'ruim'` tira uma vida. */
+   `tipo: 'bom'` vai para o prato e vale ponto. `tipo: 'ruim'` tira uma vida.
+   `recheio` é a cor que aparece no corte do Coxinha Ninja. */
 
 const Coxinha = memo(function Coxinha() {
   return (
@@ -149,11 +151,11 @@ const Oleo = memo(function Oleo() {
 })
 
 export const CATALOGO = {
-  coxinha: { tipo: 'bom', pontos: 12, tamanho: 1.0, rotulo: 'Coxinha', Sprite: Coxinha },
-  mini: { tipo: 'bom', pontos: 8, tamanho: 0.9, rotulo: 'Mini coxinha', Sprite: MiniCoxinha },
-  churros: { tipo: 'bom', pontos: 10, tamanho: 0.95, rotulo: 'Churros', Sprite: Churros },
-  refri: { tipo: 'bom', pontos: 10, tamanho: 0.95, rotulo: 'Refri', Sprite: Refri },
-  copo: { tipo: 'bom', pontos: 14, tamanho: 1.0, rotulo: 'Copo mágico', Sprite: CopoMagico },
+  coxinha: { tipo: 'bom', pontos: 12, recheio: '#fff2c4', tamanho: 1.0, rotulo: 'Coxinha', Sprite: Coxinha },
+  mini: { tipo: 'bom', pontos: 8, recheio: '#fbe7b0', tamanho: 0.9, rotulo: 'Mini coxinha', Sprite: MiniCoxinha },
+  churros: { tipo: 'bom', pontos: 10, recheio: '#b8661f', tamanho: 0.95, rotulo: 'Churros', Sprite: Churros },
+  refri: { tipo: 'bom', pontos: 10, recheio: '#5a1a0c', tamanho: 0.95, rotulo: 'Refri', Sprite: Refri },
+  copo: { tipo: 'bom', pontos: 14, recheio: '#8a4f24', tamanho: 1.0, rotulo: 'Copo mágico', Sprite: CopoMagico },
   brocolis: { tipo: 'ruim', pontos: 0, tamanho: 1.0, rotulo: 'Brócolis', Sprite: Brocolis },
   pimenta: { tipo: 'ruim', pontos: 0, tamanho: 0.95, rotulo: 'Pimenta', Sprite: Pimenta },
   bomba: { tipo: 'ruim', pontos: 0, tamanho: 1.0, rotulo: 'Bomba', Sprite: Bomba },

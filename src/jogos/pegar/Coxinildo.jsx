@@ -1,14 +1,14 @@
-import mascote from '../assets/mascote.webp'
+import mascote from '../../assets/mascote.webp'
 import { forwardRef, memo } from 'react'
 
-/* O Sr. Coxinha. O mascote é a foto oficial da loja; os dois pratos são
+/* O Coxinildo. O mascote é a foto oficial da loja; os dois pratos são
    desenhados por cima das luvas, que é onde ele já segura as plaquinhas.
 
    Quem move este bloco é o laço do jogo, direto no DOM (transform no `.heroi`),
    então este componente nunca re-renderiza durante a partida. As animações de
    andar, pular e tomar dano são só troca de classe. */
 
-const SrCoxinha = forwardRef(function SrCoxinha({ altura }, ref) {
+const Coxinildo = forwardRef(function Coxinildo({ altura }, ref) {
   return (
     <div className="heroi" ref={ref} style={{ '--h': `${altura}px` }}>
       <span className="heroi__sombra" />
@@ -18,7 +18,7 @@ const SrCoxinha = forwardRef(function SrCoxinha({ altura }, ref) {
           <img
             className="heroi__mascote"
             src={mascote}
-            alt="Sr. Coxinha, o mascote da Sua Coxinha"
+            alt="Coxinildo, o mascote da Sua Coxinha"
             draggable="false"
           />
 
@@ -41,4 +41,4 @@ const SrCoxinha = forwardRef(function SrCoxinha({ altura }, ref) {
   )
 })
 
-export default memo(SrCoxinha)
+export default memo(Coxinildo)

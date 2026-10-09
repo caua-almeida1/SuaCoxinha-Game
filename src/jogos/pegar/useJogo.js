@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { BONS, RUINS, CATALOGO } from './itens.jsx'
-import { iniciarAudio, definirSom, sons } from './som.js'
+import { BONS, RUINS, CATALOGO } from '../comum/itens.jsx'
+import { iniciarAudio, sons } from '../comum/som.js'
 
 /* O motor do jogo.
 
@@ -9,7 +9,11 @@ import { iniciarAudio, definirSom, sons } from './som.js'
    quando algo realmente aparece ou some — um item novo, uma vida a menos.
 
    Todas as medidas são em pixels por segundo e multiplicadas por `k`, a
-   escala do palco, para o jogo ficar igual no celular e no monitor grande. */
+   escala do palco, para o jogo ficar igual no celular e no monitor grande.
+
+   No celular dá pra jogar de dois jeitos: arrastando o dedo pelo palco (o
+   Coxinildo corre atrás do dedo, e um puxão para cima faz ele pular) ou
+   pelos botões da parte de baixo. */
 
 const FASES = ['sol', 'nuvens', 'arcoiris', 'noite']
 const DURACAO_FASE = 15000
@@ -26,6 +30,7 @@ const CHAO = 0.86 // altura do palco onde ficam os pés
 const ALTURA_HEROI = 0.27
 const PROPORCAO_HEROI = 0.86 // largura / altura da imagem do mascote
 const SEGUNDOS_POR_NIVEL = 20
+const PUXAO_PULO = 46 // px que o dedo precisa subir de uma vez para pular
 
 const sortear = (lista) => lista[Math.floor(Math.random() * lista.length)]
 const limitar = (v, min, max) => Math.min(Math.max(v, min), max)
@@ -41,7 +46,7 @@ export function useJogo() {
   const [efeitos, setEfeitos] = useState([])
   const [fase, setFase] = useState('sol')
   const [recorde, setRecorde] = useState(0)
-  const [somLigado, setSomLigado] = useState(true)
+  const [contagem, setContagem] = useState({})
 
   const teclas = useRef({ esq: false, dir: false })
   const recordeRef = useRef(0)
@@ -54,6 +59,7 @@ export function useJogo() {
     t: 0, proximo: 0.8, invuln: 0,
     pontos: 0, vidas: 3, combo: 0, nivel: 1, pegos: 0,
     classe: '', tinhaItens: false, efeitosMudou: false, acabou: false,
+    alvo: null, dedo: null, dedoY: 0, contagem: {},
   })
 
   /* ---------------------------------------------------------------
@@ -180,6 +186,7 @@ export function useJogo() {
       itens: [], efeitos: [], proximo: 0.9, invuln: 0,
       pontos: 0, vidas: 3, combo: 0, nivel: 1, pegos: 0,
       tinhaItens: false, efeitosMudou: false, acabou: false,
+      alvo: null, dedo: null, contagem: {},
       x: m.l ? m.l / 2 : 0,
     })
     teclas.current.esq = false
@@ -196,16 +203,57 @@ export function useJogo() {
   const pausar = useCallback(() => setEstado((e) => (e === 'jogando' ? 'pausado' : e)), [])
   const retomar = useCallback(() => setEstado((e) => (e === 'pausado' ? 'jogando' : e)), [])
 
-  const alternarSom = useCallback(() => {
-    setSomLigado((valor) => {
-      definirSom(!valor)
-      return !valor
-    })
+  /* ---------------------------------------------------------------
+     Arrastar o Coxinildo com o dedo (ou o mouse)
+  --------------------------------------------------------------- */
+
+  const xNoPalco = (evento) => {
+    const palco = palcoRef.current
+    if (!palco) return 0
+    return evento.clientX - palco.getBoundingClientRect().left
+  }
+
+  const aoTocarPalco = useCallback((evento) => {
+    const m = mundo.current
+    /* botões e a vitrine de ofertas cuidam do próprio toque */
+    if (evento.target.closest('button, a, .vitrine')) return
+    /* o toque mais novo sempre assume: um pointerup perdido nunca trava o arrasto */
+    m.dedo = evento.pointerId
+    m.dedoY = evento.clientY
+    m.alvo = xNoPalco(evento)
+    try {
+      evento.currentTarget.setPointerCapture(evento.pointerId)
+    } catch {
+      /* sem captura o arrasto funciona igual dentro do palco */
+    }
+  }, [])
+
+  const aoArrastarPalco = useCallback((evento) => {
+    const m = mundo.current
+    if (evento.pointerId !== m.dedo) return
+    m.alvo = xNoPalco(evento)
+    /* puxão rápido para cima = pulo; depois disso o gesto recomeça */
+    if (m.dedoY - evento.clientY > PUXAO_PULO) {
+      m.dedoY = evento.clientY
+      pular()
+    } else if (evento.clientY > m.dedoY) {
+      m.dedoY = evento.clientY
+    }
+  }, [pular])
+
+  const aoSoltarPalco = useCallback((evento) => {
+    const m = mundo.current
+    if (evento.pointerId !== m.dedo) return
+    m.dedo = null
+    m.alvo = null
   }, [])
 
   const encerrar = useCallback(() => {
     const m = mundo.current
     sons.perdeu()
+    m.alvo = null
+    m.dedo = null
+    setContagem({ ...m.contagem })
 
     if (m.pontos > recordeRef.current) {
       recordeRef.current = m.pontos
@@ -282,12 +330,18 @@ export function useJogo() {
       if (dir !== 0) {
         m.vx += dir * ACEL * m.k * controle * dt
         m.virado = dir > 0 ? 'dir' : 'esq'
+      } else if (m.alvo !== null) {
+        /* segue o dedo: rápido quando longe, freando quando chega */
+        const distancia = m.alvo - m.x
+        const vAlvo = limitar(distancia * 9, -VEL_MAX * m.k * 1.35, VEL_MAX * m.k * 1.35)
+        m.vx += (vAlvo - m.vx) * Math.min(1, dt * 18)
+        if (Math.abs(distancia) > 6 * m.k) m.virado = distancia > 0 ? 'dir' : 'esq'
       } else {
         const freio = FREIO * m.k * dt
         m.vx = Math.abs(m.vx) <= freio ? 0 : m.vx - Math.sign(m.vx) * freio
       }
 
-      const vmax = VEL_MAX * m.k
+      const vmax = VEL_MAX * m.k * (m.alvo !== null ? 1.35 : 1)
       m.vx = limitar(m.vx, -vmax, vmax)
       m.x += m.vx * dt
 
@@ -355,6 +409,7 @@ export function useJogo() {
               m.pontos += ganho
               m.combo += 1
               m.pegos += 1
+              m.contagem[item.chave] = (m.contagem[item.chave] || 0) + 1
               sons.pega(m.combo)
               anotar(m, 'ponto', item.x, pratoY, `+${ganho}`)
             } else if (m.invuln > 0) {
@@ -474,6 +529,8 @@ export function useJogo() {
     const aoSair = () => {
       teclas.current.esq = false
       teclas.current.dir = false
+      mundo.current.alvo = null
+      mundo.current.dedo = null
       setEstado((e) => (e === 'jogando' ? 'pausado' : e))
     }
 
@@ -504,13 +561,15 @@ export function useJogo() {
     efeitos,
     fase,
     recorde,
-    somLigado,
-    alternarSom,
+    contagem,
     iniciar,
     voltarAoMenu,
     pausar,
     retomar,
     definirTecla,
     pular,
+    aoTocarPalco,
+    aoArrastarPalco,
+    aoSoltarPalco,
   }
 }

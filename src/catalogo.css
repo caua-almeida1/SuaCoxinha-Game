@@ -1,0 +1,591 @@
+/* =========================================================
+   FLIPERAMA DO COXINILDO — catálogo de jogos
+   Mesmas cores do site da loja: amarelo da marca, marrom de
+   texto e branco. Cada jogo é um "cartucho" com uma mini cena.
+========================================================= */
+
+.catalogo {
+  --marca: #f9c115;
+  --marca-clara: #ffeb4a;
+  --marrom: #462302;
+  --vermelho: #e8372c;
+
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 0 clamp(16px, 4vw, 48px) 40px;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.35) 0 120px, transparent 121px),
+    radial-gradient(circle, rgba(70, 35, 2, 0.07) 0 2px, transparent 3px) 0 0 / 22px 22px,
+    var(--marca);
+  color: var(--marrom);
+  font-family: var(--font-display, 'Bricolage Grotesque', system-ui, sans-serif);
+  overflow-x: hidden;
+}
+
+.catalogo a {
+  color: inherit;
+}
+
+/* ---------- topo ---------- */
+
+.catalogo__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+.catalogo__voltar,
+.catalogo__pedir {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 3px solid var(--marrom);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.catalogo__voltar {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.catalogo__pedir {
+  background: var(--marrom);
+  color: var(--marca) !important;
+}
+
+/* ---------- destaque ---------- */
+
+.catalogo__hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(8px, 3vw, 28px) 0 clamp(18px, 3vw, 32px);
+}
+
+.catalogo__selo {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--marrom);
+  color: var(--marca);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.catalogo__hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2.6rem, 9vw, 5.4rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 0 rgba(255, 255, 255, 0.55);
+}
+
+.catalogo__hero p {
+  max-width: 42ch;
+  margin: 0;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  line-height: 1.5;
+}
+
+.catalogo__mascote {
+  flex-shrink: 0;
+  width: clamp(130px, 26vw, 280px);
+  filter: drop-shadow(0 12px 0 rgba(70, 35, 2, 0.18));
+  transform-origin: 50% 100%;
+  animation: tchau 3.2s ease-in-out infinite;
+}
+
+@keyframes tchau {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-8px); }
+}
+
+/* ---------- cartuchos ---------- */
+
+.catalogo__jogos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 2vw, 24px);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.cartucho {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border: 4px solid var(--marrom);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 8px 0 var(--marrom);
+  color: var(--marrom);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)), box-shadow 0.18s;
+}
+
+.cartucho:hover {
+  transform: translateY(-4px) rotate(-0.6deg);
+  box-shadow: 0 12px 0 var(--marrom);
+}
+
+.cartucho:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 var(--marrom);
+}
+
+.cartucho:focus-visible {
+  outline: 4px solid #fff;
+  outline-offset: 3px;
+}
+
+.cartucho__info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4px;
+  padding: 14px 16px 16px;
+}
+
+.cartucho__lugar {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vermelho);
+}
+
+.cartucho__nome {
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.cartucho__descricao {
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.cartucho__rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.cartucho__recorde {
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.cartucho__jogar {
+  padding: 8px 16px;
+  border: 3px solid #8a4a06;
+  border-radius: 12px;
+  background: linear-gradient(var(--marca), #ef9f12);
+  box-shadow: 0 4px 0 #8a4a06;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+/* ---------- mini cenas ---------- */
+
+.previa {
+  position: relative;
+  height: clamp(150px, 18vw, 190px);
+  overflow: hidden;
+  border-bottom: 4px solid var(--marrom);
+}
+
+.previa__item,
+.previa__bola {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  transform: rotate(var(--g, 0deg));
+  animation: cai-previa 2.6s ease-in-out infinite alternate;
+}
+
+.previa__item:nth-of-type(2n) { animation-delay: -1.3s; }
+
+.previa__item svg,
+.previa__bola svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.16));
+}
+
+.previa__item--ruim svg {
+  filter: drop-shadow(0 0 8px rgba(255, 70, 50, 0.7));
+}
+
+@keyframes cai-previa {
+  from { translate: 0 -6px; }
+  to { translate: 0 8px; }
+}
+
+/* pegar */
+.previa--pegar {
+  background: linear-gradient(#2f9fe4, #8ad3f5 70%, #dcf2ff);
+}
+
+.previa__sol {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff6c8, #ffd23f 55%, #f6a81e);
+  box-shadow: 0 0 30px rgba(255, 206, 70, 0.8);
+}
+
+.previa__grama {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 22%;
+  background: linear-gradient(#6fbd42, #3f8126);
+}
+
+.previa__mascote {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  height: 62%;
+  transform: translateX(-50%);
+  animation: respira 2.4s ease-in-out infinite;
+}
+
+/* ninja */
+.previa--ninja {
+  background:
+    linear-gradient(90deg, rgba(120, 72, 0, 0.18) 2px, transparent 2px) 0 0 / 34px 34px,
+    linear-gradient(rgba(120, 72, 0, 0.18) 2px, transparent 2px) 0 0 / 34px 34px,
+    linear-gradient(#ffd23f, #e3a90c);
+}
+
+.previa__neon {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  padding: 4px 12px;
+  border: 3px solid var(--marrom);
+  border-radius: 10px;
+  background: #2a1606;
+  color: #fff6d0;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  text-shadow: 0 0 6px #ffd23f, 0 0 14px #ff6a00;
+  transform: translateX(-50%) rotate(-2deg);
+}
+
+.previa__corte {
+  position: absolute;
+  left: 8%;
+  top: 70%;
+  width: 70%;
+  height: 5px;
+  border-radius: 99px;
+  background: #fff;
+  box-shadow: 0 0 12px 3px rgba(255, 210, 63, 0.9);
+  transform: rotate(-28deg);
+  transform-origin: 0 50%;
+}
+
+.previa__item--a {
+  clip-path: inset(0 0 50% 0);
+  transform: rotate(-28deg) translate(-8px, -8px);
+  animation: none;
+}
+
+.previa__item--b {
+  clip-path: inset(50% 0 0 0);
+  transform: rotate(-28deg) translate(8px, 10px);
+  animation: none;
+}
+
+.previa__balcao {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 16%;
+  border-top: 4px solid var(--marrom);
+  background: repeating-linear-gradient(90deg, #e8372c 0 20px, #fff4d8 20px 40px);
+}
+
+/* pong */
+.previa--pong {
+  background: linear-gradient(#ffd23f, #f9c115);
+  box-shadow: inset 0 0 0 5px #fff;
+}
+
+.previa__linha {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 50%;
+  border-top: 4px dashed rgba(255, 255, 255, 0.9);
+}
+
+.previa__raquete {
+  position: absolute;
+  left: 50%;
+  width: 34%;
+  height: 12px;
+  border: 3px solid var(--marrom);
+  border-radius: 99px;
+}
+
+.previa__raquete--ele {
+  top: 12%;
+  background: linear-gradient(#62b63a, #3d7a22);
+  animation: raquete-previa 2.2s ease-in-out infinite alternate;
+}
+
+.previa__raquete--eu {
+  bottom: 12%;
+  background: repeating-linear-gradient(90deg, #e8372c 0 10px, #fff4d8 10px 20px);
+  animation: raquete-previa 1.8s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes raquete-previa {
+  from { transform: translateX(-90%); }
+  to { transform: translateX(-10%); }
+}
+
+.previa__bola {
+  width: 34px;
+  height: 34px;
+  animation: quica-previa 1.4s ease-in-out infinite alternate;
+}
+
+.previa__bola:nth-of-type(5) { animation-delay: -0.5s; }
+.previa__bola:nth-of-type(6) { animation-delay: -0.9s; }
+
+@keyframes quica-previa {
+  from { translate: -10px -14px; rotate: -20deg; }
+  to { translate: 10px 14px; rotate: 20deg; }
+}
+
+.previa__x3 {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  padding: 2px 10px;
+  border: 3px solid #a2340a;
+  border-radius: 99px;
+  background: linear-gradient(#ffd23f, #f68a1e);
+  color: #4a1c05;
+  font-size: 0.85rem;
+  font-weight: 800;
+  transform: translateY(-50%);
+}
+
+/* ---------- cardápio ---------- */
+
+.cardapio {
+  max-width: 1120px;
+  margin: clamp(32px, 5vw, 56px) auto 0;
+  padding: clamp(18px, 3vw, 28px);
+  border: 4px solid var(--marrom);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 8px 0 var(--marrom);
+}
+
+.cardapio__topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.cardapio h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.cardapio__topo a {
+  font-size: 0.85rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.cardapio__lista {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(180px, 210px);
+  gap: 14px;
+  margin: 0 calc(clamp(18px, 3vw, 28px) * -1);
+  padding: 4px clamp(18px, 3vw, 28px) 14px;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.prato-loja {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px;
+  border: 3px solid var(--marrom);
+  border-radius: 18px;
+  background: #fffaf0;
+  scroll-snap-align: start;
+}
+
+.prato-loja img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: 6px;
+  border-radius: 12px;
+  background: #fff4cc;
+}
+
+.prato-loja strong {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.prato-loja span {
+  flex: 1;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  opacity: 0.75;
+}
+
+.prato-loja em {
+  font-style: normal;
+  font-weight: 800;
+  color: #2f7a22;
+}
+
+.prato-loja a {
+  display: grid;
+  place-items: center;
+  min-height: 38px;
+  margin-top: 6px;
+  border-radius: 10px;
+  background: #ea1d2c;
+  box-shadow: 0 3px 0 #9c0d17;
+  color: #fff !important;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.cardapio__canais {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.canal {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-width: 160px;
+  min-height: 50px;
+  border-radius: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.canal--ifood {
+  background: #ea1d2c;
+  box-shadow: 0 4px 0 #9c0d17;
+  color: #fff !important;
+}
+
+.canal--99 {
+  background: #ffdd00;
+  border: 3px solid var(--marrom);
+  box-shadow: 0 4px 0 var(--marrom);
+}
+
+.cardapio__aviso {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.72rem;
+  opacity: 0.6;
+}
+
+/* ---------- telas menores ---------- */
+
+@media (max-width: 900px) {
+  .catalogo__jogos { grid-template-columns: 1fr 1fr; }
+  .cartucho:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 600px) {
+  .catalogo__jogos { grid-template-columns: 1fr; }
+
+  .catalogo__hero { align-items: flex-end; }
+
+  .catalogo__mascote {
+    width: 112px;
+    margin-right: -6px;
+  }
+
+  .cartucho { flex-direction: row; }
+
+  .cartucho .previa {
+    flex-shrink: 0;
+    width: 38%;
+    height: auto;
+    min-height: 150px;
+    border-bottom: 0;
+    border-right: 4px solid var(--marrom);
+  }
+
+  .cartucho__info { padding: 12px; }
+  .cartucho__nome { font-size: 1.25rem; }
+  .cartucho__descricao { font-size: 0.8rem; }
+  .cartucho__rodape { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .cartucho__jogar { padding: 6px 14px; }
+
+  .previa__item { width: 34px; height: 34px; }
+  .previa__bola { width: 26px; height: 26px; }
+  .previa__neon { font-size: 0.66rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalogo__mascote,
+  .previa__item,
+  .previa__bola,
+  .previa__raquete--ele,
+  .previa__raquete--eu,
+  .previa__mascote {
+    animation: none;
+  }
+}

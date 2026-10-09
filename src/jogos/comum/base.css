@@ -1,5 +1,5 @@
 /* =========================================================
-   SR. COXINHA — o joguinho da Sua Coxinha
+   COXINHA GAME — base compartilhada pelos jogos + cenário do "Pega Pega"
 
    Tudo é CSS: o cenário, o clima, o personagem e os efeitos.
    A única imagem é a foto do mascote (src/assets/mascote.webp).
@@ -8,7 +8,7 @@
      1. página e topo
      2. palco
      3. cenário (céu, clima, parallax, chão)
-     4. Sr. Coxinha e os pratos
+     4. Coxinildo e os pratos
      5. itens e efeitos
      6. painel, combo e controles
      7. telas (menu, pausa, fim)
@@ -36,6 +36,13 @@
   initial-value: rgba(255, 255, 255, 0);
 }
 
+/* o site da loja tinha esse reset global; aqui o projeto é sozinho */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body.jogo-aberto {
   padding-bottom: 0;
   overflow: hidden;
@@ -52,8 +59,9 @@ body.jogo-aberto {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  min-height: 100svh;
+  /* altura fixa da tela: o palco (flex: 1) ocupa o resto e nunca empurra a página */
+  height: 100vh;
+  height: 100svh;
   padding: clamp(10px, 1.6vw, 20px);
   gap: clamp(8px, 1.2vw, 14px);
   background: radial-gradient(120% 90% at 50% 0%, #26324a 0%, #11131d 70%);
@@ -155,6 +163,7 @@ body.jogo-aberto {
   border: 4px solid #2a1d10;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5), inset 0 0 0 3px rgba(255, 255, 255, 0.08);
   overflow: hidden;
+  overflow: clip; /* nem foco nem scrollIntoView conseguem rolar o palco */
   isolation: isolate;
   touch-action: none;
   user-select: none;
@@ -793,7 +802,7 @@ body.jogo-aberto {
 }
 
 /* =========================================================
-   4. SR. COXINHA
+   4. COXINILDO
 ========================================================= */
 
 .heroi {
@@ -1152,30 +1161,40 @@ body.jogo-aberto {
   to { transform: translateX(-50%) scale(1); opacity: 1; }
 }
 
+/* Setas juntas no canto esquerdo, mas com um vão largo entre elas para o
+   polegar não apertar as duas; o pulo sozinho no canto direito. O resto do
+   palco fica livre para arrastar o Coxinildo. */
 .controles {
   position: absolute;
   inset: auto 0 0 0;
   z-index: 40;
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: clamp(10px, 2vw, 22px);
+  gap: 24px;
+  padding: 14px 18px calc(14px + env(safe-area-inset-bottom, 0px));
   pointer-events: none;
 }
 
+.controles__setas {
+  display: flex;
+  gap: clamp(26px, 9vw, 44px);
+}
+
 .controle {
-  width: 72px;
-  height: 72px;
-  margin-right: 10px;
+  width: 66px;
+  height: 66px;
   border: 3px solid var(--madeira-escura);
   border-radius: 50%;
-  background: linear-gradient(var(--pergaminho), var(--pergaminho-2));
+  background: linear-gradient(rgba(248, 229, 189, 0.92), rgba(236, 208, 160, 0.92));
   box-shadow: 0 5px 0 var(--madeira-escura);
   color: #3a2208;
   font-family: inherit;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   pointer-events: auto;
   touch-action: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .controle:active {
@@ -1184,7 +1203,9 @@ body.jogo-aberto {
 }
 
 .controle--pulo {
-  margin: 0 0 0 auto;
+  width: 78px;
+  height: 78px;
+  font-size: 1.8rem;
   background: linear-gradient(var(--mel), #ef9f12);
 }
 
@@ -1511,7 +1532,8 @@ body.jogo-aberto {
 
 @media (max-width: 420px) {
   .painel__coluna { display: none; }
-  .controle { width: 64px; height: 64px; }
+  .controle { width: 60px; height: 60px; }
+  .controle--pulo { width: 72px; height: 72px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,483 @@
+/* =========================================================
+   COXINHA NINJA — a cozinha da Sua Coxinha
+   Parede de azulejo amarelo da marca, letreiro em neon, tábua de
+   madeira no meio e o balcão com a fritadeira embaixo.
+========================================================= */
+
+.ninja {
+  --marca: #f9c115;
+  --marrom: #462302;
+  background: #3a2210;
+  cursor: crosshair;
+}
+
+/* ---------- cenário ---------- */
+
+.cozinha {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cozinha__azulejos {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 70% at 50% 30%, rgba(255, 255, 255, 0.28), transparent 60%),
+    linear-gradient(90deg, rgba(120, 72, 0, 0.18) 2px, transparent 2px) 0 0 / 56px 56px,
+    linear-gradient(rgba(120, 72, 0, 0.18) 2px, transparent 2px) 0 0 / 56px 56px,
+    linear-gradient(180deg, #ffd23f, #f9c115 55%, #e3a90c);
+}
+
+/* letreiro neon com o nome da loja */
+.cozinha__letreiro {
+  position: absolute;
+  top: clamp(64px, 12%, 110px);
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 26px 8px;
+  border: 4px solid var(--marrom);
+  border-radius: 18px;
+  background: #2a1606;
+  box-shadow: 0 6px 0 rgba(70, 35, 2, 0.5), 0 0 0 6px rgba(255, 255, 255, 0.25);
+  transform: translateX(-50%) rotate(-2deg);
+  line-height: 0.95;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cozinha__letreiro span,
+.cozinha__letreiro strong {
+  color: #fff6d0;
+  font-weight: 800;
+  text-shadow: 0 0 6px #ffd23f, 0 0 16px #ff9a1e, 0 0 30px #ff6a00;
+  animation: neon 5s infinite;
+}
+
+.cozinha__letreiro span {
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  letter-spacing: 0.4em;
+}
+
+.cozinha__letreiro strong {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  letter-spacing: 0.06em;
+}
+
+.cozinha__letreiro small {
+  margin-top: 4px;
+  color: #ff8fa0;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px #ff3d6a;
+}
+
+@keyframes neon {
+  0%, 18%, 22%, 60%, 100% { opacity: 1; }
+  20% { opacity: 0.45; }
+  61% { opacity: 0.7; }
+}
+
+/* prateleiras com potes de molho (os rótulos coloridos da loja) */
+.cozinha__prateleira {
+  position: absolute;
+  top: 40%;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: clamp(100px, 18%, 190px);
+  height: 54px;
+  padding: 0 12px;
+  border-bottom: 10px solid #8a5a2b;
+  filter: drop-shadow(0 6px 0 rgba(70, 35, 2, 0.35));
+}
+
+.cozinha__prateleira--esq { left: 4%; }
+.cozinha__prateleira--dir { right: 4%; justify-content: flex-end; }
+
+.cozinha__prateleira i {
+  width: 22px;
+  height: 44px;
+  border: 3px solid var(--marrom);
+  border-radius: 6px 6px 4px 4px;
+  background: linear-gradient(#fff 0 26%, var(--pote, #e8372c) 26% 74%, #fff 74%);
+}
+
+.cozinha__prateleira i:nth-child(2) { --pote: #f9c115; height: 36px; }
+.cozinha__prateleira i:nth-child(3) { --pote: #1fb5a8; }
+.cozinha__prateleira--dir i:nth-child(1) { --pote: #2d5f2e; }
+
+/* tábua grande no meio: é nela que caem os respingos */
+.cozinha__tabua {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 34%;
+  bottom: 15%;
+  border: 5px solid #6d421c;
+  border-radius: 28px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 46px),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0 3px, transparent 3px 11px),
+    linear-gradient(180deg, #c98b4b, #b0723a 60%, #9a6230);
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.12), 0 10px 0 rgba(70, 35, 2, 0.35);
+  opacity: 0.94;
+}
+
+.cozinha__vapor {
+  position: absolute;
+  left: 18%;
+  bottom: 13%;
+  width: 22%;
+  height: 30%;
+  pointer-events: none;
+}
+
+.cozinha__vapor span {
+  position: absolute;
+  bottom: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  filter: blur(8px);
+  animation: vapor 4s ease-in infinite;
+}
+
+.cozinha__vapor span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.cozinha__vapor span:nth-child(2) { left: 40%; animation-delay: 1s; }
+.cozinha__vapor span:nth-child(3) { left: 66%; animation-delay: 2s; }
+.cozinha__vapor span:nth-child(4) { left: 28%; animation-delay: 3s; }
+
+@keyframes vapor {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  20% { opacity: 0.8; }
+  100% { transform: translateY(-160px) scale(1.8); opacity: 0; }
+}
+
+.cozinha__balcao {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 15%;
+  border-top: 6px solid var(--marrom);
+  background:
+    repeating-linear-gradient(90deg, #e8372c 0 34px, #fff4d8 34px 68px);
+  box-shadow: inset 0 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.cozinha__balcao::before {
+  content: '';
+  position: absolute;
+  inset: -16px 0 auto 0;
+  height: 16px;
+  background: linear-gradient(#a9723a, #7c4e22);
+  border-top: 3px solid var(--marrom);
+}
+
+.cozinha__fritadeira {
+  position: absolute;
+  left: 18%;
+  bottom: 72%;
+  width: 22%;
+  height: 26px;
+  border: 4px solid #2b2b33;
+  border-radius: 6px 6px 14px 14px;
+  background: linear-gradient(#ffcf5a, #d18a12);
+}
+
+/* ---------- mascote no canto ---------- */
+
+.ninja__mascote {
+  position: absolute;
+  z-index: 5;
+  right: 3%;
+  bottom: 9%;
+  height: clamp(110px, 24%, 220px);
+  pointer-events: none;
+  filter: drop-shadow(0 8px 0 rgba(70, 35, 2, 0.3));
+  transform-origin: 50% 100%;
+  animation: respira 2.8s ease-in-out infinite;
+  -webkit-user-drag: none;
+}
+
+.ninja__mascote[data-humor='feliz'] { animation: comemora 0.45s ease-out 2; }
+.ninja__mascote[data-humor='triste'] { animation: murcha 0.6s ease-out; }
+.ninja__mascote[data-humor='susto'] { animation: susto 0.12s linear infinite; }
+
+@keyframes comemora {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-18%) scale(1.06, 0.96); }
+}
+
+@keyframes murcha {
+  0%, 100% { transform: rotate(0); }
+  30% { transform: rotate(-8deg) scale(0.96); }
+  60% { transform: rotate(5deg); }
+}
+
+@keyframes susto {
+  0%, 100% { transform: translateX(-3px) rotate(-3deg); }
+  50% { transform: translateX(3px) rotate(3deg); }
+}
+
+/* ---------- itens, metades, respingos ---------- */
+
+.ninja__respingos,
+.ninja__itens,
+.ninja__textos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ninja__respingos { z-index: 3; }
+.ninja__itens { z-index: 10; }
+.ninja__textos { z-index: 20; }
+
+.ninja-item,
+.metade {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+.ninja-item svg,
+.metade__sprite svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 6px 0 rgba(70, 35, 2, 0.25));
+}
+
+.ninja-item[data-tipo='ruim'] svg {
+  filter: drop-shadow(0 0 12px rgba(255, 60, 30, 0.9)) drop-shadow(0 6px 0 rgba(0, 0, 0, 0.25));
+  animation: pavio 0.3s steps(2) infinite;
+}
+
+@keyframes pavio {
+  50% { filter: drop-shadow(0 0 18px rgba(255, 200, 40, 0.95)) drop-shadow(0 6px 0 rgba(0, 0, 0, 0.25)); }
+}
+
+.metade__recorte {
+  position: absolute;
+  inset: 0;
+}
+
+.metade__recorte[data-lado='a'] { clip-path: inset(-20% -20% 50% -20%); }
+.metade__recorte[data-lado='b'] { clip-path: inset(50% -20% -20% -20%); }
+
+.metade__sprite {
+  position: absolute;
+  inset: 0;
+}
+
+/* a face do corte: a cor do recheio aparecendo */
+.metade__recheio {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 44%;
+  height: 12%;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px rgba(70, 35, 2, 0.35);
+}
+
+.respingo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 46% 54% 40% 60% / 55% 40% 60% 45%;
+  background:
+    radial-gradient(circle at 22% 30%, var(--cor) 0 9%, transparent 10%),
+    radial-gradient(circle at 80% 70%, var(--cor) 0 7%, transparent 8%),
+    radial-gradient(circle at 70% 18%, var(--cor) 0 5%, transparent 6%),
+    radial-gradient(circle, var(--cor) 0 30%, transparent 31%);
+  mix-blend-mode: multiply;
+  filter: saturate(1.2);
+}
+
+/* ---------- textos flutuantes ---------- */
+
+.ninja-texto {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200px;
+  margin-left: -100px;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-align: center;
+  text-shadow: 0 3px 0 var(--marrom), 0 0 10px rgba(0, 0, 0, 0.3);
+  animation: flutua 1s ease-out forwards;
+}
+
+.ninja-texto[data-tipo='combo'] {
+  color: #ffe27a;
+  font-size: 1.7rem;
+  animation: combo-ninja 1s ease-out forwards;
+}
+
+.ninja-texto[data-tipo='erro'] {
+  color: #ff3d2e;
+  font-size: 2.2rem;
+}
+
+@keyframes combo-ninja {
+  0% { opacity: 0; scale: 0.4; }
+  20% { opacity: 1; scale: 1.15; }
+  40% { scale: 1; }
+  100% { opacity: 0; margin-top: -40px; }
+}
+
+/* ---------- rastro da faca ---------- */
+
+.ninja__faca {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.ninja__faca polyline {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ninja__faca-brilho {
+  stroke: rgba(255, 210, 63, 0.6);
+  stroke-width: 16;
+  filter: blur(4px);
+}
+
+.ninja__faca-fio {
+  stroke: #fff;
+  stroke-width: 5;
+}
+
+/* ---------- explosão ---------- */
+
+.ninja__explosao {
+  position: absolute;
+  z-index: 30;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 20%, #ffd23f 40%, #ff6a00 65%, rgba(255, 60, 0, 0) 72%);
+  pointer-events: none;
+  animation: explode 1.1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: scale(0.2); opacity: 1; }
+  30% { transform: scale(30); opacity: 1; }
+  100% { transform: scale(46); opacity: 0.85; }
+}
+
+.ninja--explodiu {
+  animation: tremor 0.38s ease-out 3;
+}
+
+/* ---------- placar ---------- */
+
+.ninja__placar {
+  position: absolute;
+  top: clamp(10px, 1.4vw, 18px);
+  left: clamp(12px, 1.6vw, 20px);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.ninja__pontos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ninja__pontos-icone {
+  width: 40px;
+  height: 40px;
+}
+
+.ninja__pontos-icone svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ninja__pontos strong {
+  color: #fff;
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 3px 0 var(--marrom), 0 0 0 var(--marrom), 2px 2px 0 var(--marrom), -2px 2px 0 var(--marrom);
+}
+
+.ninja__recorde {
+  margin: 2px 0 0 48px;
+  color: var(--marrom);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.ninja-erros {
+  position: absolute;
+  top: clamp(12px, 1.6vw, 20px);
+  right: clamp(12px, 1.6vw, 20px);
+  z-index: 40;
+  display: flex;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.ninja-erros span {
+  color: rgba(70, 35, 2, 0.28);
+  font-size: clamp(1.6rem, 4.5vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.ninja-erros span[data-errou='true'] {
+  color: #e8372c;
+  text-shadow: 0 2px 0 #7d1810;
+  transform: scale(1.15);
+}
+
+.legenda__arte--x {
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #e8372c;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .cozinha__prateleira { display: none; }
+  .cozinha__tabua { left: 4%; right: 4%; }
+  .cozinha__letreiro { top: 74px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cozinha__letreiro span,
+  .cozinha__letreiro strong,
+  .cozinha__vapor span,
+  .ninja__mascote {
+    animation: none;
+  }
+}

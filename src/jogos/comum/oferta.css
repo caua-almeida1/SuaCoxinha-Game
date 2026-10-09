@@ -1,0 +1,225 @@
+/* =========================================================
+   OFERTAS — cartão de fim de jogo e vitrine ao vivo
+========================================================= */
+
+.oferta {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  margin: 0 0 16px;
+  padding: 12px;
+  border: 3px solid #462302;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 0 #462302;
+  color: #462302;
+  text-align: left;
+}
+
+.oferta__foto {
+  flex-shrink: 0;
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #fff4cc;
+}
+
+.oferta__corpo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.oferta__chamada {
+  align-self: flex-start;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #e8372c;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.oferta__nome {
+  margin-top: 4px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.oferta__descricao {
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  opacity: 0.75;
+}
+
+.oferta__preco {
+  margin-top: 2px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #2f7a22;
+}
+
+.oferta__acoes {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.oferta__pedir,
+.oferta__zap {
+  flex: 1;
+  display: inline-grid;
+  place-items: center;
+  min-height: 38px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.oferta__pedir {
+  background: #ea1d2c;
+  color: #fff;
+  box-shadow: 0 3px 0 #9c0d17;
+}
+
+.oferta__zap {
+  background: #25d366;
+  color: #073b1c;
+  box-shadow: 0 3px 0 #128c46;
+}
+
+.oferta__pedir:active,
+.oferta__zap:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.oferta__cardapio {
+  margin-top: 8px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #462302;
+  opacity: 0.7;
+}
+
+@media (max-width: 420px) {
+  .oferta { gap: 10px; padding: 10px; }
+  .oferta__foto { width: 84px; height: 84px; }
+  .oferta__nome { font-size: 1rem; }
+}
+
+/* ---------- vitrine ao vivo ---------- */
+
+.vitrine {
+  position: absolute;
+  z-index: 45;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(360px, calc(100% - 24px));
+  padding: 8px 10px 8px 8px;
+  border: 3px solid #462302;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 0 #462302, 0 14px 30px rgba(0, 0, 0, 0.35);
+  color: #462302;
+  transform: translateX(-50%);
+  animation: vitrine-entra 0.5s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)), vitrine-sai 0.4s ease-in 6.6s forwards;
+}
+
+.vitrine[data-posicao='topo'] { top: 86px; }
+.vitrine[data-posicao='base'] { bottom: 110px; }
+.vitrine[data-posicao='meio'] { top: 50%; margin-top: -40px; }
+
+.vitrine[data-fixa='true'] {
+  animation: vitrine-entra 0.5s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+@keyframes vitrine-entra {
+  from { opacity: 0; transform: translateX(-50%) translateY(-16px) scale(0.92); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes vitrine-sai {
+  to { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.96); }
+}
+
+.vitrine__foto {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #fff4cc;
+}
+
+.vitrine__texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.vitrine__texto span {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e8372c;
+}
+
+.vitrine__texto strong {
+  overflow: hidden;
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vitrine__texto em {
+  font-style: normal;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #2f7a22;
+}
+
+.vitrine__pedir {
+  margin-left: auto;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: #ea1d2c;
+  box-shadow: 0 3px 0 #9c0d17;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.vitrine__fechar {
+  position: absolute;
+  top: -12px;
+  right: -10px;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #462302;
+  border-radius: 50%;
+  background: #fff;
+  color: #462302;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vitrine { animation: none; }
+}
