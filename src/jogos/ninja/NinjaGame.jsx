@@ -560,7 +560,8 @@ export default function NinjaGame({ aoVoltar }) {
         </div>
         <Erros quantidade={emJogo ? m.erros : 0} />
 
-        <VitrineAoVivo ativo={estado === 'jogando'} posicao="base" primeiraEm={20000} />
+        {/* em cima do letreiro (só decoração), longe de onde os salgados sobem e do placar */}
+        <VitrineAoVivo ativo={estado === 'jogando'} posicao="letreiro" primeiraEm={20000} />
 
         {/* ---------- telas ---------- */}
         {estado === 'menu' && (
